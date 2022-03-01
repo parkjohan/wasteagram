@@ -1,18 +1,25 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class EntryListView extends StatefulWidget {
-  const EntryListView({Key? key}) : super(key: key);
+class ListScreen extends StatefulWidget {
+  ListScreen({Key? key}) : super(key: key);
 
   @override
-  _EntryListViewState createState() => _EntryListViewState();
+  _ListScreenState createState() => _ListScreenState();
 }
 
-class _EntryListViewState extends State<EntryListView> {
+class _ListScreenState extends State<ListScreen> {
   int itemCount = 0;
+  FirebaseFirestore posts = FirebaseFirestore.instance;
 
+  @override
+  void initState() {
+    super.initState();
+    setItemCount();
+  }
 
+  void setItemCount() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,7 @@ class _EntryListViewState extends State<EntryListView> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.camera_enhance),
         onPressed: () {
-          
+          Navigator.pushNamed(context, 'photoSelection');
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

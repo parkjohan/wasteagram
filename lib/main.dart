@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wasteagram/pages/photo.dart';
 import 'firebase_options.dart';
 
-import 'pages/entry_list_view.dart';
-import 'pages/add_waste_view.dart';
+import 'pages/list_screen.dart';
+import 'pages/new_post.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,13 +23,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(brightness: Brightness.dark),
       initialRoute: '/',
       routes: {
-        '/': (context) => const EntryListView(),
-        'addWaste': (context) => const AddWasteView(),
+        '/': (context) => ListScreen(),
+        'photoSelection': (context) => const PhotoSelection(),
+        'newPost': (context) => NewPost(),
       },
     );
   }
