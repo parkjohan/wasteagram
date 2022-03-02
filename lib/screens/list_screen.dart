@@ -11,7 +11,7 @@ class ListScreen extends StatefulWidget {
 
 class _ListScreenState extends State<ListScreen> {
   int itemCount = 0;
-  FirebaseFirestore posts = FirebaseFirestore.instance;
+  Future<QuerySnapshot> posts = FirebaseFirestore.instance.collection('posts').get();
 
   @override
   void initState() {
@@ -33,11 +33,15 @@ class _ListScreenState extends State<ListScreen> {
       ),
 
       // add new waste fab
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.camera_enhance),
-        onPressed: () {
-          Navigator.pushNamed(context, 'photoSelection');
-        },
+      floatingActionButton: SizedBox(
+        height: 70,
+        width: 70,
+        child: FloatingActionButton(
+          child: const Icon(Icons.camera_enhance, size: 30,),
+          onPressed: () {
+            Navigator.pushNamed(context, 'photoSelection');
+          },
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
