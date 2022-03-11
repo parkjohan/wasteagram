@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import '../components/entry_list_tile.dart';
+import '../models/post.dart';
 
 class ListScreen extends StatefulWidget {
   ListScreen({Key? key}) : super(key: key);
@@ -34,6 +35,7 @@ class _ListScreenState extends State<ListScreen> {
       body: ListView(
         children: [
           entryListTile(context, fakeData[0]),
+          entryListTile(context, fakeData[1]),
         ],
       ),
 
@@ -55,21 +57,8 @@ class _ListScreenState extends State<ListScreen> {
     );
   }
 
-  List<Entry> fakeData = [
-    Entry(date: DateFormat.yMMMd().format(DateTime.now()), itemCount: 5),
-    Entry(date: DateFormat.yMMMd().format(DateTime.now()), itemCount: 6),
+  List<Post> fakeData = [
+    Post(date: DateFormat.yMMMd().format(DateTime.now()), imageURL: 'testURL', itemCount: '5', latitude: 'latitude here', longitude: 'longitude here'),
+    Post(date: DateFormat.yMMMd().format(DateTime.now()), imageURL: 'testURL', itemCount: '6', latitude: 'latitude here', longitude: 'longitude here'),
   ];
-}
-
-// example list screen data
-// formatted date, fake photo, # of items, lat/long
-class Entry {
-  String date;
-  SizedBox fakePhoto = SizedBox(
-    height: 100,
-    width: 100,
-  );
-  int itemCount;
-
-  Entry({required this.date, required this.itemCount});
 }

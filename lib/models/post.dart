@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 class Post {
-  DateTime date;
+  String date;
   String imageURL;
   String itemCount;
   String latitude;
