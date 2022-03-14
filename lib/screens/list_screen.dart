@@ -14,51 +14,77 @@ class ListScreen extends StatefulWidget {
 
 class _ListScreenState extends State<ListScreen> {
   int itemCount = 0;
-  Future<QuerySnapshot> posts =
-      FirebaseFirestore.instance.collection('posts').get();
-
-  @override
-  void initState() {
-    super.initState();
-    setItemCount();
-  }
-
-  void setItemCount() async {}
+  final Stream<QuerySnapshot> stream =
+      FirebaseFirestore.instance.collection('Posts').snapshots();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Wasteagram - $itemCount'),
-      ),
-      body: ListView(
-        children: [
-          entryListTile(context, fakeData[0]),
-          entryListTile(context, fakeData[1]),
-        ],
-      ),
-
-      // add new waste fab
-      floatingActionButton: SizedBox(
-        height: 70,
-        width: 70,
-        child: FloatingActionButton(
-          child: const Icon(
-            Icons.camera_enhance,
-            size: 30,
+        // add new post floating action button
+        floatingActionButton: SizedBox(
+          height: 70,
+          width: 70,
+          child: FloatingActionButton(
+            child: const Icon(
+              Icons.camera_enhance,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, 'photoSelection');
+            },
           ),
-          onPressed: () {
-            Navigator.pushNamed(context, 'photoSelection');
-          },
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        appBar: AppBar(
+          centerTitle: true,
+          // use stream to count number of items in list (in real time)
+          title: StreamBuilder(
+            stream: stream,
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                Map<String, dynamic> data =
+                        snapshot.data!.docs[i].data()! as Map<String, dynamic>;
+                itemCount += int.parse(data['quantity']);
+              }
+              int totalCount = itemCount;
+              itemCount = 0; // reset itemCount so it recounts on every reload
+              return Text('Wasteagram - $totalCount');
+            },
+          ),
+        ),
+        body: StreamBuilder(
+            stream: stream,
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
+              }
 
-  List<Post> fakeData = [
-    Post(date: DateFormat.yMMMd().format(DateTime.now()), imageURL: 'testURL', itemCount: '5', latitude: 'latitude here', longitude: 'longitude here'),
-    Post(date: DateFormat.yMMMd().format(DateTime.now()), imageURL: 'testURL', itemCount: '6', latitude: 'latitude here', longitude: 'longitude here'),
-  ];
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: Text("Loading"));
+              }
+
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              List entryList = snapshot.data!.docs;
+              if (entryList.isNotEmpty) {
+                return ListView.builder(
+                  itemCount: entryList.length,
+                  itemBuilder: (context, index) {
+                    Map<String, dynamic> data =
+                        entryList[index].data()! as Map<String, dynamic>;
+                    return entryListTile(context, data);
+                  },
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }));
+  }
 }

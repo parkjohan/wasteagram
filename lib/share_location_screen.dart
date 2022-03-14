@@ -2,20 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
 
-class ShareLocationScreen extends StatefulWidget {
-  @override
-  _ShareLocationScreenState createState() => _ShareLocationScreenState();
-}
-
-class _ShareLocationScreenState extends State<ShareLocationScreen> {
+class ShareLocation {
   LocationData? locationData;
   var locationService = Location();
-
-  @override
-  void initState() {
-    super.initState();
-    retrieveLocation();
-  }
 
   void retrieveLocation() async {
     try {
@@ -42,29 +31,5 @@ class _ShareLocationScreenState extends State<ShareLocationScreen> {
       locationData = null;
     }
     locationData = await locationService.getLocation();
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (locationData == null) {
-      return Center(child: CircularProgressIndicator());
-    } else {
-      return Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Latitude: ${locationData!.latitude}',
-              style: Theme.of(context).textTheme.headline4),
-          Text('Longitude:  ${locationData!.longitude}',
-              style: Theme.of(context).textTheme.headline4),
-          ElevatedButton(
-            child: Text('Share'),
-            onPressed: () {
-            },
-          )
-        ],
-      ));
-    }
   }
 }

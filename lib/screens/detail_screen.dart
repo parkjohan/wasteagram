@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class DetailScreen extends StatelessWidget {
   // Retrieve post details from entry_list_tile
-  final post;
-  const DetailScreen({Key? key, required this.post}) : super(key: key);
+  Map<String, dynamic> post;
+  DetailScreen({Key? key, required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,29 +15,33 @@ class DetailScreen extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SizedBox(
                 height: 50,
                 child: Center(
                     child: Text(
-                  post.date,
+                  post['date'],
+                  style: Theme.of(context).textTheme.headline5,
                 )),
               ),
               SizedBox(
                 height: 300,
                 width: 300,
-                child: Container(decoration: BoxDecoration(color: Colors.blueAccent), child: Center(child: Text(post.imageURL))),
+                child: Container(
+                    child: Center(child: Image.network(post['imageURL']))),
               ),
               SizedBox(
                 height: 50,
                 child: Center(
-                  child: Text('Items: ${post.itemCount}'),
+                  child: Text('Items: ${post['quantity']}', style: Theme.of(context).textTheme.headline5),
                 ),
               ),
               SizedBox(
                 height: 50,
                 child: Center(
-                  child: Text('(${post.latitude}, ${post.longitude})'),
+                  child: Text('Location: (${post['latitude']}, ${post['longitude']})',
+                  style: Theme.of(context).textTheme.headline6),
                 ),
               )
             ],

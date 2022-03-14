@@ -1,16 +1,15 @@
 // List tile component displaying formatted DateTime.now() and the # of items
 import 'package:flutter/material.dart';
 import 'package:wasteagram/screens/detail_screen.dart';
-import '../screens/list_screen.dart';
-import '../models/post.dart';
 
-ListTile entryListTile(BuildContext context, Post post) {
+
+Widget entryListTile(BuildContext context, Map<String, dynamic> post) {
   return ListTile(
     leading: Text(
-      post.date,
+      post['date'],
       style: Theme.of(context).textTheme.headline5,
     ),
-    trailing: Text(post.itemCount.toString(),
+    trailing: Text(post['quantity'].toString(),
         style: Theme.of(context).textTheme.headline5),
     onTap: () {
       Navigator.of(context).push(
