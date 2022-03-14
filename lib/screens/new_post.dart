@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import '../models/post.dart';
 
-import '../share_location_screen.dart';
+import '../components/share_location.dart';
 import '../components/get_formatted_date.dart';
 
 class NewPost extends StatefulWidget {
