@@ -158,7 +158,7 @@ class _NewPostState extends State<NewPost> {
         decoration: BoxDecoration(color: Colors.grey),
         child: Center(
           child: Text(
-            'Take Photo...',
+            'Select photo...',
             textAlign: TextAlign.center,
           ),
         ),
